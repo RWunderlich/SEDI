@@ -66,5 +66,5 @@ sediSE <- function(a, b, c, d) {
 sediCI <- function(a, b, c, d) {
   return (c(sedi(a = a, b = b, c = c, d = d) - sediSE(a = a, b = b, c = c, d = d),
             sedi(a = a, b = b, c = c, d = d),
-            sedi(a = a, b = b, c = c, d = d) - sediSE(a = a, b = b, c = c, d = d)))
+            sedi(a = a, b = b, c = c, d = d) + sediSE(a = a, b = b, c = c, d = d)))
 }
