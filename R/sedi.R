@@ -1,4 +1,4 @@
-# R functions to compute SEDI and its 95% CI
+# R functions to compute SEDI and it 95% CI
 # by Rainer Wunderlich
 # based on Ferro, C.A.T. & Stephensons, D.B. (2011),
 # Extremal Dependence Indices: Improved Verification Measures for Deterministic Forecasts of Rare Binary Events,
@@ -52,8 +52,7 @@ logFA <- function(b, d) {
     return(log(FalseAlarm(b, d)))
 }
 
-
-# helper
+# not required but useful
 # odds ratio
 OddsRatio <- function(a, b, c, d) {
   return (
@@ -61,6 +60,18 @@ OddsRatio <- function(a, b, c, d) {
           /
             (FalseAlarm(b, d) * (OneMHR(a, c)))
           )
+}
+
+# not required but useful
+# ORSS
+ORSS <- function(a, b, c, d) {
+  return ((a*d - b*c) / (a*d + b*c))
+}
+
+# not required but useful
+# TSS
+TSS <- function(a, b, c, d) {
+  return (HitRate(a = a, c = c) - FalseAlarm(b = b, d = d))
 }
 
 # helper
@@ -81,8 +92,6 @@ CIdivi <- function(a, b, c, d) {
 CIsqtail <- function(a, b, c, d) {
   return (sqrt((HitRate(a, c) * (OneMHR(a, c))) / (a + c)))
 }
-
-
 
 # main function
 # symmetric extremal dependence index
