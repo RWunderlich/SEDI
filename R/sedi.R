@@ -1,4 +1,4 @@
-# R functions to compute SEDI and it 95% CI
+# R functions to compute SEDI and it 95% CI (also Hit Rate, False Alarm Ratio, TSS, Odds Ratio, and ORSS)
 # by Rainer Wunderlich
 # based on Ferro, C.A.T. & Stephensons, D.B. (2011),
 # Extremal Dependence Indices: Improved Verification Measures for Deterministic Forecasts of Rare Binary Events,
