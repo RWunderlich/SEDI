@@ -9,6 +9,12 @@
 # To avoid undefined values, I substitute terms resulting in a division by zero with a division by 1e-9
 
 # helper
+# base rate
+BaseRate <- function(a, b, c, d) {
+  return ((a + c) / (a + b + c + d))
+}
+
+# helper
 # hit rate
 HitRate <- function(a, c) {
   return (a / (a + c))
