@@ -51,7 +51,7 @@ OneMFA <- function(b, d) {
 }
 
 logFA <- function(b, d) {
-  if (FalseAlarm(b, d) == 0) {
+  if (is.na(FalseAlarm(b, d)) == T) {
     return(log(1e-9))
   }
   else
