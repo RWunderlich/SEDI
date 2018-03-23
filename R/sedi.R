@@ -6,7 +6,7 @@
 # DOI:10.1175/WAF-D-10-05030.1
 
 # PLEASE NOTE:
-# To avoid undefined values, I substitute terms resulting in a division by zero with a division by 1e-9
+# To avoid undefined values, I substitute some terms/values with -1e+09 or 1e-09
 
 # helper
 # base rate
@@ -22,7 +22,7 @@ HitRate <- function(a, c) {
 
 OneMHR <- function(a, c) {
   if (HitRate(a, c) == 1) {
-    return(1e-9)
+    return(1e-09)
   }
   else
   return(1 - (a / (a + c)))
@@ -30,7 +30,7 @@ OneMHR <- function(a, c) {
 
 logHR <- function(a, c) {
   if (HitRate(a, c) == 0) {
-    return(log(1e-9))
+    return(-1e+09)
   }
   else
     return(log(HitRate(a, c)))
@@ -44,15 +44,15 @@ FalseAlarm <- function(b, d) {
 
 OneMFA <- function(b, d) {
   if (FalseAlarm(b, d) == 1) {
-    return(1e-9)
+    return(1e-09)
   }
   else
   return (1 - (b / (b + d)))
 }
 
 logFA <- function(b, d) {
-  if (is.na(FalseAlarm(b, d)) == T) {
-    return(log(1e-9))
+  if (FalseAlarm(b, d) == 0) {
+    return(-1e+09)
   }
   else
     return(log(FalseAlarm(b, d)))
