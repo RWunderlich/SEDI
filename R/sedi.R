@@ -21,7 +21,7 @@ HitRate <- function(a, c) {
 }
 
 OneMHR <- function(a, c) {
-  if (HitRate(a, c) == 1) {
+  if (isTRUE(HitRate(a, c) == 1)) {
     return(1e-09)
   }
   else
@@ -29,7 +29,7 @@ OneMHR <- function(a, c) {
 }
 
 logHR <- function(a, c) {
-  if (HitRate(a, c) == 0) {
+  if (isTRUE(HitRate(a, c) == 0)) {
     return(-1e+09)
   }
   else
@@ -43,7 +43,7 @@ FalseAlarm <- function(b, d) {
 }
 
 OneMFA <- function(b, d) {
-  if (FalseAlarm(b, d) == 1) {
+  if (isTRUE(FalseAlarm(b, d) == 1)) {
     return(1e-09)
   }
   else
@@ -51,7 +51,7 @@ OneMFA <- function(b, d) {
 }
 
 logFA <- function(b, d) {
-  if (FalseAlarm(b, d) == 0) {
+  if (isTRUE(FalseAlarm(b, d) == 0)) {
     return(-1e+09)
   }
   else
