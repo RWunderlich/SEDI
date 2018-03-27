@@ -71,7 +71,9 @@ OddsRatio <- function(a, b, c, d) {
 # not required but useful
 # ORSS
 ORSS <- function(a, b, c, d) {
-  return ((a*d - b*c) / (a*d + b*c))
+  return ((HitRate(a = a, c = c) - FalseAlarm(b = b, d = d))
+          /
+          (HitRate(a = a, c = c) + FalseAlarm(b = b, d = d) - 2*(HitRate(a = a, c = c)*FalseAlarm(b = b, d = d))))
 }
 
 # not required but useful
