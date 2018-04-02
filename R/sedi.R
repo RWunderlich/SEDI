@@ -10,11 +10,11 @@
 
 # Approximations
 minusInf <- function(a = a, b = b, c = c, d = d) {
-  return(-1e+09 - sum(b, c) + 1)
+  return(-1e+09 - sum(b, c))
 }
 
 plusZero <- function(a = a, b = b, c = c, d = d) {
-  return(1e-09 - sum(b, c) - 1)
+  return(1e-09 - 1/sum(b, c))
 }
 
 # helper
