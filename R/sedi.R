@@ -6,15 +6,15 @@
 # DOI:10.1175/WAF-D-10-05030.1
 
 # PLEASE NOTE:
-# To avoid undefined values, I substitute some terms/values with -1e+09 * (a + b + c + d) and 1e-09
+# To avoid undefined values, I substitute some terms/values with -100000*(a+b+c+d) and 1/100000*(a+b+c+d)
 
 # Approximations
 minusInf <- function(a = a, b = b, c = c, d = d) {
-    return(-1e+09 * (a + b + c + d))
+  return(-1e+09 - sum(b, c) + 1)
 }
 
 plusZero <- function(a = a, b = b, c = c, d = d) {
-    return(1e-09)
+  return(1e-09 - sum(b, c) - 1)
 }
 
 # helper
@@ -34,7 +34,7 @@ OneMHR <- function(a = a, b = b, c = c, d = d) {
     return(plusZero(a = a, b = b, c = c, d = d))
   }
   else
-  return(1 - (a / (a + c)))
+    return(1 - (a / (a + c)))
 }
 
 logHR <- function(a = a, b = b, c = c, d = d) {
@@ -56,7 +56,7 @@ OneMFA <- function(a = a, b = b, c = c, d = d) {
     return(plusZero(a = a, b = b, c = c, d = d))
   }
   else
-  return (1 - (b / (b + d)))
+    return (1 - (b / (b + d)))
 }
 
 logFA <- function(a = a, b = b, c = c, d = d) {
@@ -71,10 +71,10 @@ logFA <- function(a = a, b = b, c = c, d = d) {
 # odds ratio
 OddsRatio <- function(a = a, b = b, c = c, d = d) {
   return (
-          (HitRate(a = a, b = b, c = c, d = d) * (OneMFA(a = a, b = b, c = c, d = d)))
-          /
-            (FalseAlarm(a = a, b = b, c = c, d = d) * (OneMHR(a = a, b = b, c = c, d = d)))
-          )
+    (HitRate(a = a, b = b, c = c, d = d) * (OneMFA(a = a, b = b, c = c, d = d)))
+    /
+      (FalseAlarm(a = a, b = b, c = c, d = d) * (OneMHR(a = a, b = b, c = c, d = d)))
+  )
 }
 
 # not required but useful
@@ -82,7 +82,7 @@ OddsRatio <- function(a = a, b = b, c = c, d = d) {
 ORSS <- function(a = a, b = b, c = c, d = d) {
   return ((HitRate(a = a, b = b, c = c, d = d) - FalseAlarm(a = a, b = b, c = c, d = d))
           /
-          (HitRate(a = a, b = b, c = c, d = d) + FalseAlarm(a = a, b = b, c = c, d = d) - 2*(HitRate(a = a, b = b, c = c, d = d)*FalseAlarm(a = a, b = b, c = c, d = d))))
+            (HitRate(a = a, b = b, c = c, d = d) + FalseAlarm(a = a, b = b, c = c, d = d) - 2*(HitRate(a = a, b = b, c = c, d = d)*FalseAlarm(a = a, b = b, c = c, d = d))))
 }
 
 # not required but useful
@@ -94,8 +94,10 @@ TSS <- function(a = a, b = b, c = c, d = d) {
 # helper
 # denominator CI
 CIdeno <- function(a = a, b = b, c = c, d = d) {
-  return ( 2 * abs( (((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)) + HitRate(a = a, b = b, c = c, d = d) * FalseAlarm(a = a, b = b, c = c, d = d))/((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)))) *
-                      (log( FalseAlarm(a = a, b = b, c = c, d = d) * (OneMHR(a = a, b = b, c = c, d = d)))) + ((2 * HitRate(a = a, b = b, c = c, d = d)) / (OneMHR(a = a, b = b, c = c, d = d))) * (log(HitRate(a = a, b = b, c = c, d = d) * (OneMFA(a = a, b = b, c = c, d = d))))  )  )
+  return ( 2 * abs(
+                  (((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)) + HitRate(a = a, b = b, c = c, d = d) * FalseAlarm(a = a, b = b, c = c, d = d))/((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)))) *
+                      (log( FalseAlarm(a = a, b = b, c = c, d = d) * (OneMHR(a = a, b = b, c = c, d = d)))) + ((2 * HitRate(a = a, b = b, c = c, d = d)) / (OneMHR(a = a, b = b, c = c, d = d))) * (log(HitRate(a = a, b = b, c = c, d = d) * (OneMFA(a = a, b = b, c = c, d = d))))
+                  )  )
 }
 
 # helper
@@ -113,13 +115,40 @@ CIsqtail <- function(a = a, b = b, c = c, d = d) {
 # main function
 # symmetric extremal dependence index
 sedi <- function(a = a, b = b, c = c, d = d) {
-  return (
-          (logFA(a = a, b = b, c = c, d = d) - logHR(a = a, b = b, c = c, d = d) - log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
-          /
+  if (
+    isTRUE(x = (sum(a,d) < 2)
+            )) {
+    return (list("SEDI equal to", 0))
+  }
+    
+  if (isTRUE(x = (b == 0) && (c == 0))) {
+    return(list("SEDI equal to", 1))
+  }
+  
+  if (isTRUE(x = (b == 0) && (c != 0))) {
+    return(list("SEDI larger than ", 
+                  (logFA(a = a, b = b+1, c = c, d = d) - logHR(a = a, b = b+1, c = c, d = d) - log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))
+                  /
+                    (logFA(a = a, b = b+1, c = c, d = d) + logHR(a = a, b = b+1, c = c, d = d) + log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))
+                  ))
+  }
+  
+  if (isTRUE(x = (b != 0) && (c == 0))) {
+    return(list("SEDI larger than ", 
+                  (logFA(a = a, b = b, c = c+1, d = d) - logHR(a = a, b = b, c = c+1, d = d) - log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))
+                  /
+                    (logFA(a = a, b = b, c = c+1, d = d) + logHR(a = a, b = b, c = c+1, d = d) + log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))
+      ))
+  }
+  
+  if (isTRUE(x = (b != 0) && (c != 0))) {
+    return (list("SEDI equal to",
+        (logFA(a = a, b = b, c = c, d = d) - logHR(a = a, b = b, c = c, d = d) - log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
+        /
           (logFA(a = a, b = b, c = c, d = d) + logHR(a = a, b = b, c = c, d = d) + log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
-          )
+      ))  
+  }
 }
-
 # confidence Interval 1
 # SE for SEDI
 sediSE <- function(a = a, b = b, c = c, d = d) {
