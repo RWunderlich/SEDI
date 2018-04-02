@@ -6,7 +6,7 @@
 # DOI:10.1175/WAF-D-10-05030.1
 
 # PLEASE NOTE:
-# To avoid undefined values, I substitute some terms/values with -100000*(a+b+c+d) and 1/100000*(a+b+c+d)
+# To avoid undefined values, I substitute some terms/values with -1e+09 - sum(b, c) and 1e-09 - 1/sum(b, c)
 
 # Approximations
 minusInf <- function(a = a, b = b, c = c, d = d) {
