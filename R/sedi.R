@@ -95,9 +95,9 @@ TSS <- function(a = a, b = b, c = c, d = d) {
 # denominator CI
 CIdeno <- function(a = a, b = b, c = c, d = d) {
   return ( 2 * abs(
-                  (((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)) + HitRate(a = a, b = b, c = c, d = d) * FalseAlarm(a = a, b = b, c = c, d = d))/((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)))) *
-                      (log( FalseAlarm(a = a, b = b, c = c, d = d) * (OneMHR(a = a, b = b, c = c, d = d)))) + ((2 * HitRate(a = a, b = b, c = c, d = d)) / (OneMHR(a = a, b = b, c = c, d = d))) * (log(HitRate(a = a, b = b, c = c, d = d) * (OneMFA(a = a, b = b, c = c, d = d))))
-                  )  )
+    (((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)) + HitRate(a = a, b = b, c = c, d = d) * FalseAlarm(a = a, b = b, c = c, d = d))/((OneMHR(a = a, b = b, c = c, d = d)) * (OneMFA(a = a, b = b, c = c, d = d)))) *
+      (log( FalseAlarm(a = a, b = b, c = c, d = d) * (OneMHR(a = a, b = b, c = c, d = d)))) + ((2 * HitRate(a = a, b = b, c = c, d = d)) / (OneMHR(a = a, b = b, c = c, d = d))) * (log(HitRate(a = a, b = b, c = c, d = d) * (OneMFA(a = a, b = b, c = c, d = d))))
+  )  )
 }
 
 # helper
@@ -115,38 +115,58 @@ CIsqtail <- function(a = a, b = b, c = c, d = d) {
 # main function
 # symmetric extremal dependence index
 sedi <- function(a = a, b = b, c = c, d = d) {
-  if (
-    isTRUE(x = (sum(a,d) < 2)
-            )) {
-    return (list("SEDI equal to", 0))
-  }
-    
-  if (isTRUE(x = (b == 0) && (c == 0))) {
-    return(list("SEDI equal to", 1))
+  if (isTRUE(x = (max(a,b,c,d) <= 1) && sum(a,b,c,d) <= 1)) {
+    return(list(" (Almost) empty confusion matrix", NaN))  
   }
   
-  if (isTRUE(x = (b == 0) && (c != 0))) {
-    return(list("SEDI larger than ", 
+  if (isTRUE(x = (min(a,b,c,d) < 1))) {
+    if (isTRUE(x = (sum(a,b) < 1) &&  (sum(c,d) > 1) )) {
+      return(list("Always predicting absence:", 0))
+    }
+    if (isTRUE(x = (sum(c,d) < 1) &&  (sum(a,b) > 1) )) {
+      return(list("Always predicting presence:", 0))
+    }
+    if (isTRUE(x = (sum(b,c) < 1) &&  (sum(a,d) > 1) )) {
+      return(list("Perfect prediction:", 1))
+    }
+    if (isTRUE(x = (sum(a,d) < 1) &&  (sum(b,c) > 1) )) {
+      return(list("Inverse prediction:", 0))
+    }
+  
+    if (isTRUE(x = (a < 1 && min(b,c,d) >=1))) {
+      return(list("Undefined, but smaller than",
+                  (logFA(a = a+1, b = b, c = c, d = d) - logHR(a = a+1, b = b, c = c, d = d) - log(OneMFA(a = a+1, b = b, c = c, d = d)) + log(OneMHR(a = a+1, b = b, c = c, d = d)))
+                  /
+                  (logFA(a = a+1, b = b, c = c, d = d) + logHR(a = a+1, b = b, c = c, d = d) + log(OneMFA(a = a+1, b = b, c = c, d = d)) + log(OneMHR(a = a+1, b = b, c = c, d = d)))))  
+    }
+  
+    if (isTRUE(x = (d < 1 && min(a,b,c) >=1))) {
+      return(list("Undefined, but smaller than",
+                  (logFA(a = a, b = b, c = c, d = d+1) - logHR(a = a, b = b, c = c, d = d+1) - log(OneMFA(a = a, b = b, c = c, d = d+1)) + log(OneMHR(a = a, b = b, c = c, d = d+1)))
+                  /
+                  (logFA(a = a, b = b, c = c, d = d+1) + logHR(a = a, b = b, c = c, d = d+1) + log(OneMFA(a = a, b = b, c = c, d = d+1)) + log(OneMHR(a = a, b = b, c = c, d = d+1)))))  
+    }
+  
+    if (isTRUE(x = (b < 1 && min(a,c,d) >=1))) {
+      return(list("Undefined, but greater than",
                   (logFA(a = a, b = b+1, c = c, d = d) - logHR(a = a, b = b+1, c = c, d = d) - log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))
                   /
-                    (logFA(a = a, b = b+1, c = c, d = d) + logHR(a = a, b = b+1, c = c, d = d) + log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))
-                  ))
-  }
+                  (logFA(a = a, b = b+1, c = c, d = d) + logHR(a = a, b = b+1, c = c, d = d) + log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))))  
+    }
   
-  if (isTRUE(x = (b != 0) && (c == 0))) {
-    return(list("SEDI larger than ", 
+    if (isTRUE(x = (c < 1 && min(a,b,d) >=1))) {
+      return(list("Undefined, but greater than",
                   (logFA(a = a, b = b, c = c+1, d = d) - logHR(a = a, b = b, c = c+1, d = d) - log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))
                   /
-                    (logFA(a = a, b = b, c = c+1, d = d) + logHR(a = a, b = b, c = c+1, d = d) + log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))
-      ))
+                  (logFA(a = a, b = b, c = c+1, d = d) + logHR(a = a, b = b, c = c+1, d = d) + log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))))  
+    }
   }
-  
-  if (isTRUE(x = (b != 0) && (c != 0))) {
+  else {
     return (list("SEDI equal to",
-        (logFA(a = a, b = b, c = c, d = d) - logHR(a = a, b = b, c = c, d = d) - log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
-        /
-          (logFA(a = a, b = b, c = c, d = d) + logHR(a = a, b = b, c = c, d = d) + log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
-      ))  
+                 (logFA(a = a, b = b, c = c, d = d) - logHR(a = a, b = b, c = c, d = d) - log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
+                 /
+                 (logFA(a = a, b = b, c = c, d = d) + logHR(a = a, b = b, c = c, d = d) + log(OneMFA(a = a, b = b, c = c, d = d)) + log(OneMHR(a = a, b = b, c = c, d = d)))
+            ))  
   }
 }
 # confidence Interval 1
@@ -158,7 +178,12 @@ sediSE <- function(a = a, b = b, c = c, d = d) {
 # confidence Interval 2
 # LCL sedi UCL 95%
 sediCI <- function(a = a, b = b, c = c, d = d) {
-  return (c(sedi(a = a, b = b, c = c, d = d) - sediSE(a = a, b = b, c = c, d = d),
-            sedi(a = a, b = b, c = c, d = d),
-            sedi(a = a, b = b, c = c, d = d) + sediSE(a = a, b = b, c = c, d = d)))
+  if (isTRUE(min(a,b,c,d) >= 1))  {
+  return (list("SEDI_lcl, SEDI, SEDI_ucl",sedi(a = a, b = b, c = c, d = d)[[2]] - sediSE(a = a, b = b, c = c, d = d),
+            sedi(a = a, b = b, c = c, d = d)[[2]],
+            sedi(a = a, b = b, c = c, d = d)[[2]] + sediSE(a = a, b = b, c = c, d = d)))
+  }
+  else{
+    return(list("Confidence interval cannot be determined", sedi(a = a, b = b, c = c, d = d)))
+  }
 }
