@@ -6,15 +6,16 @@
 # DOI:10.1175/WAF-D-10-05030.1
 
 # PLEASE NOTE:
-# To avoid undefined values, I substitute some terms/values with -1e+09 - sum(b, c) and 1e-09 - 1/sum(b, c)
+# To avoid undefined values, individual zeros are substituted by 1 and all returned results indicated whether they represent precise valuse or upper/lower approximations
+# in addition zeroes in divisions and minusInf are approximated by 1e-09
 
 # Approximations
 minusInf <- function(a = a, b = b, c = c, d = d) {
-  return(-1e+09 - sum(b, c))
+  return(-1e+09)
 }
 
 plusZero <- function(a = a, b = b, c = c, d = d) {
-  return(1e-09 - 1/sum(b, c))
+  return(1e-09)
 }
 
 # helper
