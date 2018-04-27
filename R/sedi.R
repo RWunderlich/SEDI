@@ -7,7 +7,7 @@
 
 # PLEASE NOTE:
 # To avoid undefined values, individual zeros are substituted by 1 and all returned results indicated whether they represent precise valuse or upper/lower approximations
-# in addition zeroes in divisions and minusInf are approximated by 1e-09
+# in addition zeroes in divisions and minusInf are approximated by 1e-09 and -1e09, respectively.
 
 # Approximations
 minusInf <- function(a = a, b = b, c = c, d = d) {
