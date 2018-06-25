@@ -136,30 +136,30 @@ sedi <- function(a = a, b = b, c = c, d = d) {
   
     if (isTRUE(x = (a < 1 && min(b,c,d) >=1))) {
       return(list("Undefined, but smaller than",
-                  (logFA(a = a+1, b = b, c = c, d = d) - logHR(a = a+1, b = b, c = c, d = d) - log(OneMFA(a = a+1, b = b, c = c, d = d)) + log(OneMHR(a = a+1, b = b, c = c, d = d)))
+                  (logFA(a = a+1e-09, b = b, c = c, d = d) - logHR(a = a+1e-09, b = b, c = c, d = d) - log(OneMFA(a = a+1e-09, b = b, c = c, d = d)) + log(OneMHR(a = a+1e-09, b = b, c = c, d = d)))
                   /
-                  (logFA(a = a+1, b = b, c = c, d = d) + logHR(a = a+1, b = b, c = c, d = d) + log(OneMFA(a = a+1, b = b, c = c, d = d)) + log(OneMHR(a = a+1, b = b, c = c, d = d)))))  
+                  (logFA(a = a+1e-09, b = b, c = c, d = d) + logHR(a = a+1e-09, b = b, c = c, d = d) + log(OneMFA(a = a+1e-09, b = b, c = c, d = d)) + log(OneMHR(a = a+1e-09, b = b, c = c, d = d)))))  
     }
   
     if (isTRUE(x = (d < 1 && min(a,b,c) >=1))) {
       return(list("Undefined, but smaller than",
-                  (logFA(a = a, b = b, c = c, d = d+1) - logHR(a = a, b = b, c = c, d = d+1) - log(OneMFA(a = a, b = b, c = c, d = d+1)) + log(OneMHR(a = a, b = b, c = c, d = d+1)))
+                  (logFA(a = a, b = b, c = c, d = d+1e-09) - logHR(a = a, b = b, c = c, d = d+1e-09) - log(OneMFA(a = a, b = b, c = c, d = d+1e-09)) + log(OneMHR(a = a, b = b, c = c, d = d+1e-09)))
                   /
-                  (logFA(a = a, b = b, c = c, d = d+1) + logHR(a = a, b = b, c = c, d = d+1) + log(OneMFA(a = a, b = b, c = c, d = d+1)) + log(OneMHR(a = a, b = b, c = c, d = d+1)))))  
+                  (logFA(a = a, b = b, c = c, d = d+1e-09) + logHR(a = a, b = b, c = c, d = d+1e-09) + log(OneMFA(a = a, b = b, c = c, d = d+1e-09)) + log(OneMHR(a = a, b = b, c = c, d = d+1e-09)))))  
     }
   
     if (isTRUE(x = (b < 1 && min(a,c,d) >=1))) {
       return(list("Undefined, but greater than",
-                  (logFA(a = a, b = b+1, c = c, d = d) - logHR(a = a, b = b+1, c = c, d = d) - log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))
+                  (logFA(a = a, b = b+1e-09, c = c, d = d) - logHR(a = a, b = b+1e-09, c = c, d = d) - log(OneMFA(a = a, b = b+1e-09, c = c, d = d)) + log(OneMHR(a = a, b = b+1e-09, c = c, d = d)))
                   /
-                  (logFA(a = a, b = b+1, c = c, d = d) + logHR(a = a, b = b+1, c = c, d = d) + log(OneMFA(a = a, b = b+1, c = c, d = d)) + log(OneMHR(a = a, b = b+1, c = c, d = d)))))  
+                  (logFA(a = a, b = b+1e-09, c = c, d = d) + logHR(a = a, b = b+1e-09, c = c, d = d) + log(OneMFA(a = a, b = b+1e-09, c = c, d = d)) + log(OneMHR(a = a, b = b+1e-09, c = c, d = d)))))  
     }
   
     if (isTRUE(x = (c < 1 && min(a,b,d) >=1))) {
       return(list("Undefined, but greater than",
-                  (logFA(a = a, b = b, c = c+1, d = d) - logHR(a = a, b = b, c = c+1, d = d) - log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))
+                  (logFA(a = a, b = b, c = c+1e-09, d = d) - logHR(a = a, b = b, c = c+1e-09, d = d) - log(OneMFA(a = a, b = b, c = c+1e-09, d = d)) + log(OneMHR(a = a, b = b, c = c+1e-09, d = d)))
                   /
-                  (logFA(a = a, b = b, c = c+1, d = d) + logHR(a = a, b = b, c = c+1, d = d) + log(OneMFA(a = a, b = b, c = c+1, d = d)) + log(OneMHR(a = a, b = b, c = c+1, d = d)))))  
+                  (logFA(a = a, b = b, c = c+1e-09, d = d) + logHR(a = a, b = b, c = c+1e-09, d = d) + log(OneMFA(a = a, b = b, c = c+1e-09, d = d)) + log(OneMHR(a = a, b = b, c = c+1e-09, d = d)))))  
     }
   }
   else {
