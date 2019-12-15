@@ -2,10 +2,11 @@
 # (Hit Rate, False Alarm Ratio, TSS, Odds Ratio, and ORSS can also be computed)
 # by Rainer Wunderlich
 # References
-# 1) Original paper introducing SEDI
+# Wunderlich, R. F., Lin, Y. P., Anthony, J., & Petway, J. R. (2019). Two alternative evaluation metrics to replace the true skill statistic in the assessment of species distribution models. Nature Conservation, 35, 97-116.
+
+# Original paper introducing SEDI
 # Ferro, C.A.T. & Stephensons, D.B. (2011), # Extremal Dependence Indices: Improved Verification Measures for
-# Deterministic Forecasts of Rare Binary Events, Weather & Forecasting, 26, 699-713. DOI:10.1175/WAF-D-10-05030.1
-# 2) Wunderlich, R.F.W., Lin, Y.-P., Anthony, J., Petway, J.R. (information will be updated)
+# Deterministic Forecasts of Rare Binary Events, Weather & Forecasting, 26, 699-713.
 
 # PLEASE NOTE:
 # To avoid undefined values, individual zeros are substituted by infinitely small values (1e-9) and
